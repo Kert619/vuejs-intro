@@ -50,6 +50,7 @@ function completeTodo(todo) {
 
 function setEditMode(todo) {
   todo.isEditMode = !todo.isEditMode;
+  todo.updatedTodo = todo.todo;
 }
 
 function editTodo(todo) {
