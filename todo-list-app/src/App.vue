@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 const todos = ref([]);
 
 const todo = ref("");
-const editedTodo = ref("");
 
 function addTodo() {
   if (todo.value == "") return;
@@ -15,10 +14,10 @@ function addTodo() {
   const newTodo = {
     id: randomId,
     todo: todo.value,
+    updatedTodo: todo.value,
     isCompleted: false,
     isEditMode: false,
   };
-
   todos.value.push(newTodo);
 
   todo.value = "";
@@ -51,13 +50,11 @@ function completeTodo(todo) {
 
 function setEditMode(todo) {
   todo.isEditMode = !todo.isEditMode;
-  editedTodo.value = "";
 }
 
 function editTodo(todo) {
-  if (editedTodo.value == "") return;
-  todo.todo = editedTodo.value;
-  editedTodo.value = "";
+  if (todo.updatedTodo == "") return;
+  todo.todo = todo.updatedTodo;
   todo.isEditMode = false;
 }
 </script>
@@ -104,8 +101,7 @@ function editTodo(todo) {
             class="form-control"
             type="text"
             placeholder="Enter Todo Here"
-            :value="todo.todo"
-            @input="editedTodo = $event.target.value"
+            v-model="todo.updatedTodo"
             @keypress.enter="editTodo(todo)"
           />
           <button @click="editTodo(todo)" class="btn btn-primary" type="button">
