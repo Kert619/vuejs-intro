@@ -1,7 +1,29 @@
 <script setup>
 import { useProductStore } from "../stores/product";
+import Swal from "sweetalert2";
 
 const productStore = useProductStore();
+
+function deleteProduct(index) {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      productStore.deleteProduct(index);
+      Swal.fire({
+        title: "Deleted!",
+        text: "Product has been deleted.",
+        icon: "success",
+      });
+    }
+  });
+}
 </script>
 
 <template>
@@ -46,7 +68,12 @@ const productStore = useProductStore();
           <td>
             <div class="d-flex gap-2">
               <button class="btn btn-sm btn-success">Edit</button>
-              <button class="btn btn-sm btn-danger">Delete</button>
+              <button
+                @click="deleteProduct(index)"
+                class="btn btn-sm btn-danger"
+              >
+                Delete
+              </button>
             </div>
           </td>
         </tr>
