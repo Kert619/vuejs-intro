@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "@/pages/Dashboard.vue";
 import Products from "@/pages/Products.vue";
+import CreateProduct from "@/pages/CreateProduct.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,7 +16,16 @@ const router = createRouter({
     },
     {
       path: "/products",
-      component: Products,
+      children: [
+        {
+          path: "",
+          component: Products,
+        },
+        {
+          path: "create",
+          component: CreateProduct,
+        },
+      ],
     },
   ],
 });
