@@ -12,7 +12,7 @@ import { RouterView } from "vue-router";
     </div>
 
     <div class="flex-grow-1 d-flex flex-column overflow-auto">
-      <NavBar class="shadow px-3 py-1" />
+      <NavBar class="shadow p-3" />
       <div class="overflow-auto">
         <RouterView />
       </div>

@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 const productStore = useProductStore();
 
-const search = ref('')
+const search = ref("");
 
 function deleteProduct(index) {
   Swal.fire({
@@ -32,10 +32,23 @@ function deleteProduct(index) {
 <template>
   <div class="p-3">
     <div class="input-group mb-3">
-      <input @keypress.enter="productStore.filterProducts(search)" type="text" class="form-control"
-        placeholder="Search product name here" v-model="search" />
-      <button @click="productStore.filterProducts(search)" class="btn btn-outline-primary" type="button">Search</button>
-      <RouterLink to="/products/create" class="btn btn-primary" type="button">Add Product</RouterLink>
+      <input
+        @keyup="productStore.filterProducts(search)"
+        type="text"
+        class="form-control"
+        placeholder="Search product name here"
+        v-model="search"
+      />
+      <button
+        @click="productStore.filterProducts(search)"
+        class="btn btn-outline-primary"
+        type="button"
+      >
+        Search
+      </button>
+      <RouterLink to="/products/create" class="btn btn-primary" type="button"
+        >Add Product</RouterLink
+      >
     </div>
 
     <table class="table table-hover">
@@ -51,20 +64,34 @@ function deleteProduct(index) {
       </thead>
       <tbody>
         <template v-if="productStore.filteredProducts.length > 0">
-          <tr v-for="(product, index) in productStore.filteredProducts" :key="product.id">
+          <tr
+            v-for="(product, index) in productStore.filteredProducts"
+            :key="product.id"
+          >
             <td>{{ index + 1 }}</td>
             <td>{{ product.product_name }}</td>
             <td>{{ product.price }}</td>
             <td>{{ product.quantity }}</td>
             <td>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" :checked="product.isAvailable" disabled />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  :checked="product.isAvailable"
+                  disabled
+                />
+                <label class="form-check-label">{{
+                  product.isAvailable ? "Available" : "Unavailable"
+                }}</label>
               </div>
             </td>
             <td>
               <div class="d-flex gap-2">
                 <button class="btn btn-sm btn-success">Edit</button>
-                <button @click="deleteProduct(index)" class="btn btn-sm btn-danger">
+                <button
+                  @click="deleteProduct(index)"
+                  class="btn btn-sm btn-danger"
+                >
                   Delete
                 </button>
               </div>
@@ -72,7 +99,9 @@ function deleteProduct(index) {
           </tr>
         </template>
         <tr v-else>
-          <td colspan="6" class="text-center text-danger">No products found...</td>
+          <td colspan="6" class="text-center text-danger">
+            No products found...
+          </td>
         </tr>
       </tbody>
     </table>

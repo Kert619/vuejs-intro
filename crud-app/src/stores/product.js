@@ -7,6 +7,11 @@ export const useProductStore = defineStore("product", function () {
 
   const searchInput = ref("");
 
+  function filterProducts(search) {
+    console.log(search);
+    searchInput.value = search;
+  }
+
   const filteredProducts = computed(function () {
     return products.value.filter((product) =>
       product.product_name
@@ -32,10 +37,6 @@ export const useProductStore = defineStore("product", function () {
       return product.quantity < 100;
     }).length;
   });
-
-  function filterProducts(search) {
-    searchInput.value = search;
-  }
 
   function deleteProduct(index) {
     products.value.splice(index, 1);
