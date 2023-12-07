@@ -8,7 +8,6 @@ export const useProductStore = defineStore("product", function () {
   const searchInput = ref("");
 
   function filterProducts(search) {
-    console.log(search);
     searchInput.value = search;
   }
 
@@ -19,6 +18,12 @@ export const useProductStore = defineStore("product", function () {
         .includes(searchInput.value.toLowerCase())
     );
   });
+
+  function getProductById(id) {
+    return products.value.find(function (product) {
+      return product.id == id;
+    });
+  }
 
   const availableProducts = computed(function () {
     return products.value.filter(function (product) {
@@ -38,7 +43,11 @@ export const useProductStore = defineStore("product", function () {
     }).length;
   });
 
-  function deleteProduct(index) {
+  function deleteProduct(id) {
+    const index = products.value.findIndex(function (product) {
+      return product.id == id;
+    });
+
     products.value.splice(index, 1);
   }
 
@@ -55,6 +64,15 @@ export const useProductStore = defineStore("product", function () {
     return max + 1;
   }
 
+  function updateProduct(id, payload) {
+    const product = getProductById(id);
+
+    product.product_name = payload.product_name;
+    product.quantity = payload.quantity;
+    product.price = payload.price;
+    product.isAvailable = payload.isAvailable;
+  }
+
   return {
     products,
     deleteProduct,
@@ -65,5 +83,7 @@ export const useProductStore = defineStore("product", function () {
     criticalStocks,
     addProduct,
     getLatestId,
+    getProductById,
+    updateProduct,
   };
 });

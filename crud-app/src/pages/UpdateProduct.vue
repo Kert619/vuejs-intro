@@ -25,7 +25,7 @@
             </label>
         </div>
 
-        <button @click="submitForm" type="button" class="btn btn-primary me-2">Create Product</button>
+        <button @click="submitForm" type="button" class="btn btn-primary me-2">Update Product</button>
         <button @click="$router.push({ path: '/products' })" type="button" class="btn btn-danger">Back</button>
     </div>
 </template>
@@ -35,18 +35,21 @@ import { ref } from 'vue'
 import Swal from 'sweetalert2'
 
 import { useProductStore } from "../stores/product"
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const productStore = useProductStore();
 
 const router = useRouter()
+const route = useRoute()
+
+const product = productStore.getProductById(route.params.id)
 
 const form = ref({
-    id: productStore.getLatestId(),
-    product_name: '',
-    price: '',
-    quantity: '',
-    isAvailable: true,
+    id: product.id,
+    product_name: product.product_name,
+    price: product.price,
+    quantity: product.quantity,
+    isAvailable: product.isAvailable,
 })
 
 const formError = ref({
@@ -84,7 +87,7 @@ function submitForm() {
     if (!hasError.value) {
         Swal.fire({
             title: "Are you sure?",
-            text: "Add new product",
+            text: "Update current product",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -92,10 +95,10 @@ function submitForm() {
             confirmButtonText: "Yes"
         }).then((result) => {
             if (result.isConfirmed) {
-                productStore.addProduct(form.value)
+                productStore.updateProduct(product.id, form.value)
                 Swal.fire({
                     title: "Added!",
-                    text: "New product has been added",
+                    text: "Product has been updated",
                     icon: "success"
                 }).then(() => {
                     router.push({ path: "/products", replace: true })
